@@ -1,20 +1,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.patras.ttn2es</groupId>
-  <artifactId>io.patras.ttn2es</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>io.patras.ttn2es</groupId>
+	<artifactId>io.patras.ttn2es</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>io.patras.ttn2es</name>
-  <url>http://maven.apache.org</url>
+	<name>io.patras.ttn2es</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jackson.version>1.9.4</jackson.version>
 		<cxf.version>3.0.0</cxf.version>
-  </properties>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -56,8 +56,8 @@
 			<version>${cxf.version}</version>
 		</dependency>
 	</dependencies>
-	
-	
+
+
 	<build>
 
 
@@ -81,6 +81,65 @@
 					</arguments>
 				</configuration>
 			</plugin>
+			<!-- assembly plugin -->
+			<!-- the assembly plugin is used to define your final deploy output (jar, 
+				zip, dir, war, etc..) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>assembly:package</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<!-- The filename of the assembled distribution file defualt ${project.build.finalName} -->
+							<finalName>${project.build.finalName}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+							<!-- A list of descriptor files path to generate from -->
+							<descriptors>
+								<descriptor>assembly.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- jar plug in -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>io.patras.ttn2es.App</mainClass>
+							<!-- to create a class path to your dependecies you have to fill true 
+								in this field -->
+							<addClasspath>true</addClasspath>
+							<!-- if you put your dependencySet/outputDirectory in the assembly 
+								file is in a specific folder (lib for example), you need to add classpathPrefix -->
+							<classpathPrefix>lib/</classpathPrefix>
+
+							<!-- if you defined your dependencySet/outputFileNameMapping in the 
+								assembly, instead of using the classpathPrefix, you should use customClasspathLayout, 
+								add the classpathPrefix at the begining of the customClasspathLayout, and 
+								then add the pattern of the outputFileNameMapping, NOTICE YOU NEED TO ADD 
+								'$' BEFOR OF EACH '$'. supported only from version 2.3> -->
+							<!--<classpathLayoutType>custom</classpathLayoutType> <customClasspathLayout> 
+								lib/$${artifact.groupId}.$${artifact.artifactId}.$${artifact.extension} </customClasspathLayout> -->
+
+						</manifest>
+
+						<manifestEntries>
+							<Class-Path>conf/</Class-Path>
+						</manifestEntries>
+					</archive>
+
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

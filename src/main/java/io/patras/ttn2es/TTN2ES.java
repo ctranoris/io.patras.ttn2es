@@ -31,7 +31,7 @@ public class TTN2ES {
 	/** */
 	private static final String ACCESSKEY = "ttn-account-v2.CBkYkmqpnGahBFR6DlUNiELrEPL2cthpOnV-XEOmTMM";
 	/** */
-	private static final String ESENDPOINTURL = "http://localhost:9200";
+	private static final String ESENDPOINTURL = "http://150.140.184.249:9200";
 
 	/**
 	 * 

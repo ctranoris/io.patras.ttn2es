@@ -46,20 +46,19 @@ public class AgroduAnnotatedData implements IAnnotatedData {
 		annotatedData.put("MUnit", unit);
 		this.valueType = vt;
 
-		DateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
-		format.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-		try {
-			String time = data.getJSONObject("metadata").getString("time");
-			String d = time.substring(0, 10);
-			String t = time.substring(11, 19);
-			Date timestamp = format.parse(d + t);
-			annotatedData.put("timestamp", timestamp);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				
-		}
+//		DateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+//		format.setTimeZone(TimeZone.getTimeZone("UTC"));		
+//		try {
+//			String time = data.getJSONObject("metadata").getString("time");
+//			String d = time.substring(0, 10);
+//			String t = time.substring(11, 19);
+//			Date timestamp = format.parse(d + t);
+//			annotatedData.put("timestamp", timestamp);
+//			} catch (ParseException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				
+//		}
 
 	}
 
@@ -85,9 +84,10 @@ public class AgroduAnnotatedData implements IAnnotatedData {
 	public static AgroduAnnotatedData[] transformToAgroduAnnotatedData(final Message data, final String payload) {
 
 		AgroduAnnotatedData[] ads = new AgroduAnnotatedData[3];
-		ads[0] = new AgroduAnnotatedData(data, ValueType.TEMPERATURE,   Math.random()*10.0 + 20, "Celsius");
-		ads[1] = new AgroduAnnotatedData(data, ValueType.HUMIDITY, Math.random()*10.0 + 60, "");
-		ads[2] = new AgroduAnnotatedData(data, ValueType.SOILHYGROMETER, 1200.0, "");
+		String vals[] = payload.split(";");
+		ads[0] = new AgroduAnnotatedData(data, ValueType.HUMIDITY, Double.parseDouble( vals[0] ), "");
+		ads[1] = new AgroduAnnotatedData(data, ValueType.TEMPERATURE, Double.parseDouble( vals[1] ), "Celsius");
+		ads[2] = new AgroduAnnotatedData(data, ValueType.SOILHYGROMETER, Double.parseDouble( vals[2] ), "");
 		return ads;
 
 	}
